@@ -1,7 +1,7 @@
 const Products = require("../models/Products");
 const Categories = require("../models/Categories");
 const ProductAssets = require("../models/ProductAssets");
-const { BadRequestError } = require("../errors");
+const { BadRequestError, CustomAPIError } = require("../errors");
 const { Op } = require("sequelize");
 
 const createSlug = async (val) => {
@@ -49,7 +49,7 @@ const createProduct = async (req, res) => {
   }
   const category = await Categories.findOne({ where: { name: categoryName } });
   if (!category) {
-    throw new BadRequestError("Kategori tidak ditemukan");
+    throw new CustomAPIError("Kategori tidak ditemukan", 404);
   }
   const slug = await createSlug(name);
 
@@ -73,11 +73,11 @@ const editProduct = async (req, res) => {
   const id = parseInt(req.params.id);
   const product = await Products.findByPk(id);
   if (!product) {
-    throw new BadRequestError("Produk tidak ditemukan");
+    throw new CustomAPIError("Produk tidak ditemukan", 404);
   }
   const category = await Categories.findOne({ where: { name: categoryName } });
   if (!category) {
-    throw new BadRequestError("Kategori tidak ditemukan");
+    throw new CustomAPIError("Kategori tidak ditemukan", 404);
   }
   const slug = await createSlug(name);
   const updatedProduct = await product.update({
@@ -93,7 +93,7 @@ const deleteOneProduct = async (req, res) => {
   const id = parseInt(req.params.id);
   const product = await Products.findByPk(id);
   if (!product) {
-    throw new BadRequestError("Produk tidak ditemukan");
+    throw new CustomAPIError("Produk tidak ditemukan", 404);
   }
   await ProductAssets.destroy({
     where: {
