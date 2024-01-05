@@ -43,8 +43,8 @@ const createSlug = async (val) => {
 };
 
 const createProduct = async (req, res) => {
-  const { name, categoryName } = req.body;
-  let { price } = req.body;
+  const { name, price, categoryName } = req.body;
+
   if (!name || !price || !categoryName) {
     throw new BadRequestError("lengkapi data");
   }
