@@ -25,14 +25,17 @@ const createSlug = async (val) => {
       },
       attributes: ["slug"],
     });
-    if (similarSlugs.length > 1) {
-      const splitedArr = similarSlugs[similarSlugs.length - 1].slug.split("-");
+    if (similarSlugs) {
+      if (similarSlugs.length > 1) {
+        const splitedArr =
+          similarSlugs[similarSlugs.length - 1].slug.split("-");
 
-      counter = parseInt(splitedArr[splitedArr.length - 1]);
-      counter++;
-      slug = `${slug}-${counter}`;
-    } else {
-      slug = `${slug}-${counter}`;
+        counter = parseInt(splitedArr[splitedArr.length - 1]);
+        counter++;
+        slug = `${slug}-${counter}`;
+      } else {
+        slug = `${slug}-${counter}`;
+      }
     }
   }
   return slug;
