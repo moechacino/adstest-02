@@ -3,16 +3,13 @@ const ProductAssets = require("../models/ProductAssets");
 const { BadRequestError, CustomAPIError } = require("../errors");
 
 const createAssets = async (req, res) => {
-  const { productName, image } = req.body;
-  if (!productName || !image) {
+  const id = parseInt(req.params.id);
+  const { image } = req.body;
+  if (!image) {
     throw new BadRequestError("Lengkapi data");
   }
 
-  const product = await Products.findOne({
-    where: {
-      name: productName,
-    },
-  });
+  const product = await Products.findByPk(id);
   if (!product) {
     throw new CustomAPIError("Produk tidak ditemukan", 404);
   }
