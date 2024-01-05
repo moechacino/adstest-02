@@ -26,23 +26,22 @@ const createAssets = async (req, res) => {
 };
 
 const editAssets = async (req, res) => {
-  const productId = parseInt(req.params.productId);
-  const product = await Products.findByPk(parseInt(productId));
-  if (!product) {
-    throw new CustomAPIError("Produk tidak ditemukan", 404);
-  }
-  const assetId = parseInt(req.params.assetId);
-  const asset = await ProductAssets.findByPk(assetId);
+  const id = parseInt(req.params.id);
+  const asset = await ProductAssets.findByPk(id);
   if (!asset) {
     throw new CustomAPIError("Asset tidak ditemukan", 404);
   }
-
-  const { image } = req.body;
-  if (!image) {
+  const { productId, image } = req.body;
+  if (!productId || !image) {
     throw new BadRequestError("Lengkapi data");
   }
+  const product = await Products.findByPk(parseInt(productId));
+  if (!product) {
+    throw new CustomAPIError("Produk tidak ditemukann", 404);
+  }
 
-  const updatedAsset = await asset.update({
+  const updatedAsset = asset.update({
+    product_id: product.id,
     image: image,
   });
 
