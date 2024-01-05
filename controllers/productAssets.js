@@ -59,4 +59,17 @@ const deleteOneAssets = async (req, res) => {
   res.status(200).json({ success: true, deletedAsset: asset });
 };
 
-module.exports = { createAssets, deleteOneAssets, editAssets };
+const getAssets = async (req, res) => {
+  const assets = await ProductAssets.findAll({
+    include: [
+      {
+        model: Products,
+        attributes: ["name"],
+      },
+    ],
+  });
+
+  res.status(200).json({ success: true, count: assets.length, data: assets });
+};
+
+module.exports = { createAssets, deleteOneAssets, editAssets, getAssets };
