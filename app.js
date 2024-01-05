@@ -7,10 +7,12 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 
 const products = require("./routes/products");
 const productsAssets = require("./routes/productAssets");
+const categories = require("./routes/categories");
 app.use(express.json());
 
 app.use("/api/adstest/product", products);
 app.use("/api/adstest/assets", productsAssets);
+app.use("/api/adstest/category", categories);
 app.use((req, res) => {
   res.status(404).send("Route doesnt exist");
 });
