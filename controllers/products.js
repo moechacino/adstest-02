@@ -67,6 +67,11 @@ const createProduct = async (req, res) => {
 };
 
 const editProduct = async (req, res) => {
+  const id = parseInt(req.params.id);
+  const product = await Products.findByPk(id);
+  if (!product) {
+    throw new CustomAPIError("Produk tidak ditemukan", 404);
+  }
   const { name, price, categoryName } = req.body;
   if (!name || !price || !categoryName) {
     throw new BadRequestError("lengkapi data");
@@ -74,11 +79,7 @@ const editProduct = async (req, res) => {
   if (isNaN(price)) {
     throw new BadRequestError("Harga harus berupa angka");
   }
-  const id = parseInt(req.params.id);
-  const product = await Products.findByPk(id);
-  if (!product) {
-    throw new CustomAPIError("Produk tidak ditemukan", 404);
-  }
+
   const category = await Categories.findOne({ where: { name: categoryName } });
   if (!category) {
     throw new CustomAPIError("Kategori tidak ditemukan", 404);
