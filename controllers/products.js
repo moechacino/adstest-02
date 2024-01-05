@@ -110,4 +110,36 @@ const deleteOneProduct = async (req, res) => {
   res.status(200).json({ success: true, deletedProduct: product });
 };
 
-module.exports = { createProduct, editProduct, deleteOneProduct };
+const getProducts = async (req, res) => {
+  const products = await Products.findAll({
+    attributes: [
+      ["id", "product_id"],
+      ["name", "product_name"],
+      ["slug", "slug"],
+      ["price", "price"],
+    ],
+    include: [
+      {
+        model: Categories,
+        attributes: ["name"],
+      },
+    ],
+  });
+  const assets = await ProductAssets.findAll();
+  products.forEach((product) => {
+    const productAssets = assets.filter(
+      (asset) => asset.product_id === product.dataValues.product_id
+    );
+    product.dataValues.assets = [];
+    productAssets.forEach((asset) => {
+      product.dataValues.assets.push({
+        asset_id: asset.id,
+        image: asset.image,
+      });
+    });
+  });
+
+  res.json(products);
+};
+
+module.exports = { createProduct, editProduct, deleteOneProduct, getProducts };
