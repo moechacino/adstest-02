@@ -1,6 +1,5 @@
-const Products = require("../models/Products");
 const Categories = require("../models/Categories");
-const ProductAssets = require("../models/ProductAssets");
+
 const { BadRequestError, CustomAPIError } = require("../errors");
 
 const createCategory = async (req, res) => {
@@ -26,6 +25,14 @@ const editCategory = async (req, res) => {
   res.status(200).json({ success: true, updatedCategory });
 };
 
-const deleteCategory = async (req, res) => {};
+const deleteCategory = async (req, res) => {
+  const id = parseInt(req.params.id);
+  const category = await Categories.findByPk(id);
+  if (!category) {
+    throw new CustomAPIError("Kateogri tidak ditemukan", 404);
+  }
+  await category.destroy();
+  res.json({ success: true, deletedCategory: category });
+};
 
 module.exports = { createCategory, editCategory, deleteCategory };
