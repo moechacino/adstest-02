@@ -8,6 +8,6 @@ const {
 
 Router.route("/create").post(createAssets);
 Router.route("/delete/:id").delete(deleteOneAssets);
-Router.route("/edit/:id").patch(editAssets);
+Router.route("/edit/:productId/:assetId").patch(editAssets);
 
 module.exports = Router;
