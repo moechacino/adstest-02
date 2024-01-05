@@ -40,7 +40,7 @@ const editAssets = async (req, res) => {
     throw new CustomAPIError("Produk tidak ditemukann", 404);
   }
 
-  const updatedAsset = asset.update({
+  const updatedAsset = await asset.update({
     product_id: product.id,
     image: image,
   });
