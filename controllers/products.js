@@ -15,8 +15,8 @@ const createSlug = async (val) => {
     .replace(/[^\w\-]+/g, "");
   const existingProduct = await Products.findOne({ where: { slug } });
   let counter = 1;
-
-  if (!(existingProduct.length === 0)) {
+  console.log(existingProduct);
+  if (existingProduct) {
     const similarSlugs = await Products.findAll({
       where: {
         slug: {
@@ -25,6 +25,7 @@ const createSlug = async (val) => {
       },
       attributes: ["slug"],
     });
+
     if (similarSlugs) {
       if (similarSlugs.length > 1) {
         const splitedArr =
