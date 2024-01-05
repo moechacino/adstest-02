@@ -111,6 +111,7 @@ const deleteOneProduct = async (req, res) => {
 };
 
 const getProducts = async (req, res) => {
+  const { priceSorting } = req.query;
   const products = await Products.findAll({
     attributes: [
       ["id", "product_id"],
@@ -130,16 +131,24 @@ const getProducts = async (req, res) => {
     const productAssets = assets.filter(
       (asset) => asset.product_id === product.dataValues.product_id
     );
-    product.dataValues.assets = [];
-    productAssets.forEach((asset) => {
-      product.dataValues.assets.push({
-        asset_id: asset.id,
-        image: asset.image,
-      });
-    });
+    product.dataValues.assets = productAssets.map((asset) => ({
+      asset_id: asset.id,
+      image: asset.image,
+    }));
   });
+  let sortedProducts = [...products];
 
-  res.json(products);
+  if (priceSorting) {
+    if (priceSorting === "tertinggi") {
+      sortedProducts.sort((a, b) => b.price - a.price);
+    } else if (priceSorting === "terendah") {
+      sortedProducts.sort((a, b) => a.price - b.price);
+    } else {
+      throw new BadRequestError("Sorting harga tidak valid");
+    }
+  }
+
+  res.status(200).json(sortedProducts);
 };
 
 module.exports = { createProduct, editProduct, deleteOneProduct, getProducts };
