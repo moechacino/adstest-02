@@ -12,8 +12,12 @@ const categories = require("./insertData/categories.json");
 
 const start = async () => {
   try {
+    // await sequelize.sync({ force: true });
     await sequelize.authenticate();
     console.log("DB Connected");
+    // await ProductAssets.drop();
+    // await Products.drop();
+    // await Categories.drop();
     await Categories.bulkCreate(categories);
     await Products.bulkCreate(products);
     await ProductAssets.bulkCreate(productassets);
