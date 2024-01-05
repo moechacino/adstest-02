@@ -100,11 +100,6 @@ const deleteOneProduct = async (req, res) => {
   if (!product) {
     throw new CustomAPIError("Produk tidak ditemukan", 404);
   }
-  await ProductAssets.destroy({
-    where: {
-      product_id: id,
-    },
-  });
   await product.destroy();
 
   res.status(200).json({ success: true, deletedProduct: product });

@@ -19,7 +19,7 @@ const Products = sequelize.define("products", {
 });
 Products.belongsTo(Categories, {
   foreignKey: "Category_id",
-  onDelete: "CASCADE",
+  onDelete: "SET NULL",
 });
 
 module.exports = Products;

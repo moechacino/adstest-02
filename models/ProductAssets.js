@@ -14,7 +14,7 @@ const ProductAssets = sequelize.define("product_assets", {
 
 ProductAssets.belongsTo(Products, {
   foreignKey: "product_id",
-  onDelete: "CASCADE",
+  onDelete: "SET NULL",
 });
 
 module.exports = ProductAssets;
