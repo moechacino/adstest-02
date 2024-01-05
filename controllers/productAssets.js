@@ -1,5 +1,4 @@
 const Products = require("../models/Products");
-const Categories = require("../models/Categories");
 const ProductAssets = require("../models/ProductAssets");
 const { BadRequestError, CustomAPIError } = require("../errors");
 
